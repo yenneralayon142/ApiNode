@@ -1,3 +1,10 @@
+-- Crear el esquema
+CREATE SCHEMA db_node DEFAULT CHARACTER SET utf8;
+
+-- Usar el esquema
+USE db_node;
+
+-- Crear la tabla de usuarios
 CREATE TABLE users (
   id BIGINT NOT NULL AUTO_INCREMENT,
   email VARCHAR(180) NOT NULL UNIQUE,
