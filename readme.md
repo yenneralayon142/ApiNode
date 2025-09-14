@@ -5,7 +5,7 @@ Este proyecto consiste en una aplicación móvil multiplataforma que permite a l
 ---
 ## 🙍‍♂️ Desarrolladores
 
-Yenner Snyder Alayon Benavides 
+Yenner Snyder Alayon Benavides <br>
 Jonathan Andres Garcia Rodriguez
 
 ## ✨ Características principales
