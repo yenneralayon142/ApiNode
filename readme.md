@@ -3,6 +3,10 @@
 Este proyecto consiste en una aplicación móvil multiplataforma que permite a los usuarios registrar, consultar y gestionar sus gastos personales de manera eficiente. El objetivo principal es brindar una herramienta sencilla y práctica que apoye la toma de decisiones financieras.
 
 ---
+## 🙍‍♂️ Desarrolladores
+
+Yenner Snyder Alayon Benavides 
+Jonathan Andres Garcia Rodriguez
 
 ## ✨ Características principales
 - ✅ Registro de ingresos y egresos.
