@@ -16,9 +16,13 @@ Este proyecto consiste en una aplicación móvil multiplataforma que permite a l
 ## 🛠️ Stack Tecnológico
 - **Frontend:** [React Native](https://reactnative.dev/)  
 - **Backend:** [Node.js](https://nodejs.org/) con API REST  
-- **Base de Datos:** [PostgreSQL](https://www.postgresql.org/) o [MongoDB](https://www.mongodb.com/)  
+- **Base de Datos:** [PostgreSQL](https://www.postgresql.org/) o [MongoDB](https://www.mongodb.com/)  o [MySql](https://www.mysql.com/)
 - **Gestión del Proyecto:** [Azure DevOps](https://azure.microsoft.com/services/devops/) (Boards, Repos, Pipelines)
 
+
+## 📕 Documento Proyecto
+Puedes consultar el documento completo en el siguiente enlace:  
+[📘 Descargar PDF del proyecto](documentacionProyecto/ProyectoControlDeGastosMovil.pdf)
 ---
 
 ## 🚀 Instalación y ejecución
