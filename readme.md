@@ -27,27 +27,5 @@ Puedes consultar el documento completo en el siguiente enlace:
 
 ## 🚀 Instalación y ejecución
 
-### 1. Clonar el repositorio
-```bash
-git clone https://dev.azure.com/tu-organizacion/Aplicacion-Control-Gastos/_git/Aplicacion-Control-Gastos
-cd Aplicacion-Control-Gastos
-
-### 2. Instalar Dependencias
-
-cd frontend
-npm install
-
-### 3. Ejecutar la aplicación mobile
-
-npm start
-
-### 4. Ejecutar la aplicación mobile
-
-cd backend
-npm install
-
-### 5. Levantar el servidor
-
-npm run dev
-
+Futuramente se desbloqueara esta sección..
 
