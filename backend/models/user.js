@@ -1,198 +1,158 @@
 const db = require('../config/config');
 const bcrypt = require('bcryptjs');
 
-const User = {};
-
-/**
- * Listar todos los usuarios
- */
-User.findAll = (result) => {
-  const sql = `
-    SELECT id, email, name, lastname, phone, image, created_at, updated_at
-    FROM users
-  `;
-
-  db.query(sql, (err, users) => {
-    if (err) {
-      console.error('Error al listar usuarios:', err);
-      return result(err, null);
-    }
-
-    console.log('Usuarios encontrados:', users.length);
-    return result(null, users);
-  });
-};
-
-/**
- * Buscar usuario por ID
- */
-User.findById = (id, result) => {
-  const sql = `
-    SELECT id, email, name, lastname, image, password
-    FROM users
-    WHERE id = ?
-  `;
-
-  db.query(sql, [id], (err, rows) => {
-    if (err) {
-      console.error('Error al consultar por ID:', err);
-      return result(err, null);
-    }
-
-    const user = rows && rows[0] ? rows[0] : null;
-    console.log('Usuario consultado:', user);
-    return result(null, user);
-  });
-};
-
-/**
- * Buscar usuario por email
- */
-User.findByEmail = (email, result) => {
-  const sql = `
-    SELECT id, email, name, lastname, image, phone, password
-    FROM users
-    WHERE email = ?
-  `;
-
-  db.query(sql, [email], (err, rows) => {
-    if (err) {
-      console.error('Error al consultar por email:', err);
-      return result(err, null);
-    }
-
-    const user = rows && rows[0] ? rows[0] : null;
-    console.log('Usuario consultado:', user);
-    return result(null, user);
-  });
-};
-
-/**
- * Crear usuario
- */
-User.create = async (user, result) => {
-  try {
-    const hash = await bcrypt.hash(user.password, 10);
-
-    const sql = `
-      INSERT INTO users (
-        email,
-        name,
-        lastname,
-        phone,
-        image,
-        password,
-        created_at,
-        updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-
-    const params = [
-      user.email,
-      user.name,
-      user.lastname,
-      user.phone,
-      user.image,
-      hash,
-      new Date(),
-      new Date()
-    ];
-
-    db.query(sql, params, (err, res) => {
+const query = (sql, params = []) =>
+  new Promise((resolve, reject) => {
+    db.query(sql, params, (err, results) => {
       if (err) {
-        console.error('Error al crear al usuario:', err);
-        return result(err, null);
+        return reject(err);
       }
-
-      const created = { id: res.insertId, ...user, password: undefined };
-      console.log('Usuario creado:', created);
-      return result(null, created);
+      resolve(results);
     });
-  } catch (err) {
-    console.error('Error al hashear contraseña:', err);
-    return result(err, null);
+  });
+
+const toPublic = (user) => {
+  if (!user) {
+    return null;
   }
+
+  // Eliminamos el hash de contrase�a u otros campos sensibles
+  const { password, ...rest } = user;
+  return rest;
 };
 
-/**
- * Actualizar usuario (campos dinámicos)
- */
-User.update = async (user, result) => {
-  try {
-    const fields = [];
-    const values = [];
+const normalizeOptional = (value) => (value === undefined ? null : value);
 
-    // Contraseña (si viene, se hashea)
-    if (user.password) {
-      const hash = await bcrypt.hash(user.password, 10);
-      fields.push('password = ?');
-      values.push(hash);
-    }
+const BASE_SELECT = `
+  SELECT id,
+         email,
+         name,
+         lastname,
+         phone,
+         image,
+         password,
+         created_at,
+         updated_at
+    FROM users
+`;
 
-    if (user.email) {
-      fields.push('email = ?');
-      values.push(user.email);
-    }
-    if (user.name) {
-      fields.push('name = ?');
-      values.push(user.name);
-    }
-    if (user.lastname) {
-      fields.push('lastname = ?');
-      values.push(user.lastname);
-    }
-    if (user.phone) {
-      fields.push('phone = ?');
-      values.push(user.phone);
-    }
-    if (user.image) {
-      fields.push('image = ?');
-      values.push(user.image);
-    }
-
-    // Siempre actualizamos la fecha
-    fields.push('updated_at = ?');
-    values.push(new Date());
-
-    if (fields.length === 0) {
-      // No hay nada que actualizar
-      return result(null, { id: user.id });
-    }
-
-    const sql = `UPDATE users SET ${fields.join(', ')} WHERE id = ?`;
-    values.push(user.id);
-
-    db.query(sql, values, (err) => {
-      if (err) {
-        console.error('Error al actualizar usuario:', err);
-        return result(err, null);
-      }
-
-      const updated = { id: user.id, ...user, password: undefined };
-      console.log('Usuario actualizado:', updated);
-      return result(null, updated);
-    });
-  } catch (err) {
-    console.error('Error en update:', err);
-    return result(err, null);
-  }
+const findAll = async () => {
+  const sql = `${BASE_SELECT}`;
+  const rows = await query(sql);
+  return rows.map(toPublic);
 };
 
-/**
- * Eliminar usuario
- */
-User.delete = (id, result) => {
+const findById = async (id) => {
+  const sql = `${BASE_SELECT} WHERE id = ? LIMIT 1`;
+  const rows = await query(sql, [id]);
+  return rows[0] || null;
+};
+
+const findByEmail = async (email) => {
+  const sql = `${BASE_SELECT} WHERE email = ? LIMIT 1`;
+  const rows = await query(sql, [email]);
+  return rows[0] || null;
+};
+
+const create = async (user) => {
+  const hashedPassword = await bcrypt.hash(user.password, 10);
+  const now = new Date();
+  const sql = `
+    INSERT INTO users (
+      email,
+      name,
+      lastname,
+      phone,
+      image,
+      password,
+      created_at,
+      updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  const params = [
+    user.email,
+    normalizeOptional(user.name),
+    normalizeOptional(user.lastname),
+    normalizeOptional(user.phone),
+    normalizeOptional(user.image),
+    hashedPassword,
+    now,
+    now
+  ];
+
+  const result = await query(sql, params);
+  const created = await findById(result.insertId);
+  return toPublic(created);
+};
+
+const update = async (user) => {
+  const fields = [];
+  const values = [];
+
+  if (user.email !== undefined) {
+    fields.push('email = ?');
+    values.push(user.email);
+  }
+  if (user.name !== undefined) {
+    fields.push('name = ?');
+    values.push(user.name);
+  }
+  if (user.lastname !== undefined) {
+    fields.push('lastname = ?');
+    values.push(user.lastname);
+  }
+  if (user.phone !== undefined) {
+    fields.push('phone = ?');
+    values.push(user.phone);
+  }
+  if (user.image !== undefined) {
+    fields.push('image = ?');
+    values.push(user.image);
+  }
+
+  if (fields.length === 0) {
+    const current = await findById(user.id);
+    return toPublic(current);
+  }
+
+  fields.push('updated_at = ?');
+  values.push(new Date());
+
+  const sql = `UPDATE users SET ${fields.join(', ')} WHERE id = ?`;
+  values.push(user.id);
+  await query(sql, values);
+  const updated = await findById(user.id);
+  return toPublic(updated);
+};
+
+const remove = async (id) => {
   const sql = 'DELETE FROM users WHERE id = ?';
-
-  db.query(sql, [id], (err, res) => {
-    if (err) {
-      console.error('Error al eliminar usuario:', err);
-      return result(err, null);
-    }
-
-    console.log('Usuario eliminado con id:', id, 'Afectados:', res.affectedRows);
-    return result(null, res);
-  });
+  const result = await query(sql, [id]);
+  return {
+    id,
+    deleted: result.affectedRows > 0
+  };
 };
 
-module.exports = User;
+const comparePassword = (plain, hashed) => bcrypt.compare(plain, hashed);
+
+const updatePassword = async (id, newPassword) => {
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  const sql = 'UPDATE users SET password = ?, updated_at = ? WHERE id = ?';
+  await query(sql, [hashedPassword, new Date(), id]);
+  const updated = await findById(id);
+  return toPublic(updated);
+};
+
+module.exports = {
+  findAll,
+  findById,
+  findByEmail,
+  create,
+  update,
+  remove,
+  comparePassword,
+  updatePassword,
+  toPublic
+};

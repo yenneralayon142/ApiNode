@@ -1,20 +1,23 @@
 const mysql = require('mysql');
 
-// Configuración de la conexión a la base de datos
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'db_node',
-  port: 3307
-});
+const dbConfig = {
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || '',
+  database: process.env.DB_NAME || 'db_node',
+  port: Number(process.env.DB_PORT) || 3307,
+  connectionLimit: Number(process.env.DB_POOL_LIMIT) || 10
+};
 
-// Conexión
-db.connect((err) => {
+const pool = mysql.createPool(dbConfig);
+
+pool.getConnection((err, connection) => {
   if (err) {
-    throw err;
+    console.error('Error al conectar con la base de datos', err);
+    return;
   }
-  console.log('✅ Base de datos conectada');
+  console.log('Base de datos conectada');
+  connection.release();
 });
 
-module.exports = db;
+module.exports = pool;

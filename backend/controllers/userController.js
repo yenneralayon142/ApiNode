@@ -1,140 +1,109 @@
 const User = require('../models/user');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const keys = require('../config/keys');
-module.exports = {
-  login(req, res) {
-    const email = req.body.email;
-    const password = req.body.password;
-    User.findByEmail(email, async (err, myUser) => {
-      if (err) {
-        return res.status(501).json({
-          success: false,
-          message: 'Error al consultar el usuario',
-          error: err
-        });
-      }
-      if (!myUser) {
-        return res.status(401).json({
-          success: false,
-          message: 'El email no existe en la base de datos'
-        });
-      }
-      const isPasswordValid = await bcrypt.compare(password, myUser.password);
-      if (isPasswordValid) {
-        const token = jwt.sign({ id: myUser.id, email: myUser.email }, keys.secretOrKey, {});
-        const data = {
-          id: myUser.id,
-          email: myUser.email,
-          name: myUser.name,
-          lastname: myUser.lastname,
-          image: myUser.image,
-          phone: myUser.phone,
-          session_token: `JWT ${token}`
-        }
-        return res.status(201).json({
-          success: true,
-          message: 'Usuario autenticado ',
-          data: data
-        });
-      }
-      else {
-        return res.status(401).json({
-          success: false,
-          message: 'Contraseña o correo incorrecto'
-        });
-      }
+const authController = require('./authController');
+
+const handleUnexpectedError = (res, error, message) => {
+  console.error(message, error);
+  return res.status(500).json({
+    success: false,
+    message
+  });
+};
+
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.findAll();
+    return res.status(200).json({
+      success: true,
+      message: 'Lista de usuarios',
+      data: users
     });
-  },
-  getAllUsers(req, res) {
-    User.findAll((err, users) => {
-      if (err) {
-        return res.status(501).json({
-          success: false,
-          message: 'Error al listar usuarios',
-          error: err
-        });
-      }
-      return res.status(200).json({
-        success: true,
-        message: 'Lista de usuarios',
-        data: users
-      });
-    });
-  },
-  getUserById(req, res) {
-    const id = req.params.id;
-    User.findById(id, (err, user) => {
-      if (err) {
-        return res.status(501).json({
-          success: false,
-          message: 'Error al consultar el usuario',
-          error: err
-        });
-      }
-      if (!user) {
-        return res.status(404).json({
-          success: false,
-          message: 'Usuario no encontrado'
-        });
-      }
-      return res.status(200).json({
-        success: true,
-        message: 'Usuario encontrado',
-        data: user
-      });
-    });
-  },
-  register(req, res) {
-    const user = req.body;
-    User.create(user, (err, data) => {
-      if (err) {
-        return res.status(501).json ({
-          success: false,
-          message: 'Error al crear al usuario',
-          error: err
-        });
-      } else {
-        return res.status(201).json({
-          success: true,
-          message: 'Creado el Usuario',
-          data: data
-        });
-      }
-    });
-  },
-  getUserUpdate(req, res) {
-    const user = req.body;
-    User.update(user, (err, data) => {
-      if (err) {
-        return res.status(501).json({
-          success: false,
-          message: 'Error al actualizar el usuario',
-          error: err
-        });
-      }
-      return res.status(200).json({
-        success: true,
-        message: 'Usuario actualizado',
-        data: data
-      });
-    });
-  },
-  getUserDelete(req, res) {
-    const id = req.params.id;
-    User.delete(id, (err, data) => {
-      if (err) {
-        return res.status(501).json({
-          success: false,
-          message: 'Error al eliminar el usuario',
-          error: err
-        });
-      }
-      return res.status(200).json({
-        success: true,
-        message: 'Usuario eliminado',
-        data: data
-      });
-    });
+  } catch (error) {
+    return handleUnexpectedError(res, error, 'Error al listar usuarios');
   }
-}
+};
+
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'Usuario no encontrado'
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Usuario encontrado',
+      data: User.toPublic(user)
+    });
+  } catch (error) {
+    return handleUnexpectedError(res, error, 'Error al consultar el usuario');
+  }
+};
+
+const updateUser = async (req, res) => {
+  try {
+    const { id, ...changes } = req.body || {};
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: 'Se requiere el identificador del usuario.'
+      });
+    }
+
+    const updated = await User.update({ id, ...changes });
+    if (!updated) {
+      return res.status(404).json({
+        success: false,
+        message: 'Usuario no encontrado'
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Usuario actualizado',
+      data: updated
+    });
+  } catch (error) {
+    return handleUnexpectedError(res, error, 'Error al actualizar el usuario');
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: 'Se requiere el identificador del usuario.'
+      });
+    }
+
+    const result = await User.remove(id);
+    if (!result.deleted) {
+      return res.status(404).json({
+        success: false,
+        message: 'Usuario no encontrado'
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Usuario eliminado',
+      data: { id }
+    });
+  } catch (error) {
+    return handleUnexpectedError(res, error, 'Error al eliminar el usuario');
+  }
+};
+
+module.exports = {
+  login: authController.login,
+  register: authController.register,
+  getAllUsers,
+  getUserById,
+  getUserUpdate: updateUser,
+  getUserDelete: deleteUser
+};

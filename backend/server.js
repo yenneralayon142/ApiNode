@@ -1,32 +1,43 @@
 const express = require('express');
 const passport = require('passport');
-const app = express();
 const http = require('http');
-const server = http.createServer(app);
 const logger = require('morgan');
 const cors = require('cors');
+
 const usersRoutes = require('./routes/userRoute');
+const authRoutes = require('./routes/authRoute');
+
+const app = express();
+const server = http.createServer(app);
 const port = process.env.PORT || 3000;
+const host = process.env.HOST || '0.0.0.0';
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-app.use(passport.initialize());
-app.use(passport.session());
-require('./config/passport')(passport);
 app.disable('x-powered-by');
-app.set('port', port);
+
+app.use(passport.initialize());
+require('./config/passport')(passport);
+
+authRoutes(app);
 usersRoutes(app);
-server.listen(3000, '172.29.224.1' || 'localhost', function(){
-  console.log('App node.js ' + process.pid + ' ejecutando en ' + server.address().address + ':' + server.address().port);
-});
+
 app.get('/', (req, res) => {
-  res.send('Ruta raÃ­z del Backend');
+  res.send('API de Control de Gastos en ejecución.');
 });
+
 app.get('/test', (req, res) => {
   res.send('Ruta TEST');
 });
+
 app.use((err, req, res, next) => {
-  console.log(err);
+  console.error(err);
   res.status(err.status || 500).send(err.stack);
+});
+
+server.listen(port, host, () => {
+  const address = server.address();
+  console.log(`App node.js ${process.pid} ejecutándose en ${address.address}:${address.port}`);
 });
