@@ -28,3 +28,10 @@
 ## Security & Configuration Tips
 - Sanitize and validate incoming data inside controllers before issuing MySQL queries; prefer parameterized statements.
 - Never commit real credentials. Document required environment keys in `backend/.env.example`, including `PORT`, `DB_*`, `JWT_*`, and `PASSWORD_RESET_TOKEN_MINUTES`.
+
+## Proximos Pasos
+- Integrar Sequelize: migraciones y modelos bajo `backend/sequelize/` para `users`, `user_refresh_tokens`, `password_reset_tokens`.
+- Disenar nuevas tablas estilo Splitwise (`groups`, `group_members`, `categories`, `expenses`, `expense_shares`) y generar migraciones correspondientes.
+- Implementar controladores y rutas `/categories` y `/expenses` con validaciones, filtros por fecha y verificacion de pertenencia (JWT/Passport).
+- Configurar Jest + Supertest en `backend/tests/` y reemplazar el script `npm test` para automatizar los flujos clave.
+- Actualizar `database/db_node.sql` para reflejar cambios en el esquema y proveer instrucciones de despliegue.
