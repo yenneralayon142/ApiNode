@@ -7,12 +7,6 @@ const keys = require('../config/keys');
 
 const ACCESS_TOKEN_ISSUER = 'control-gastos-api';
 
-const isEmail = (value = '') =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value).trim().toLowerCase());
-
-const isStrongPassword = (value = '') =>
-  typeof value === 'string' && value.length >= 8;
-
 const buildAccessToken = (user) =>
   jwt.sign(
     {
@@ -70,20 +64,6 @@ const register = async (req, res) => {
   try {
     const { email, password, name, lastname, phone, image } = req.body || {};
 
-    if (!isEmail(email)) {
-      return res.status(400).json({
-        success: false,
-        message: 'El correo electrónico no es válido.'
-      });
-    }
-
-    if (!isStrongPassword(password)) {
-      return res.status(400).json({
-        success: false,
-        message: 'La contraseña debe tener al menos 8 caracteres.'
-      });
-    }
-
     const existing = await User.findByEmail(email);
     if (existing) {
       return res.status(409).json({
@@ -120,13 +100,6 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body || {};
 
-    if (!isEmail(email) || !password) {
-      return res.status(400).json({
-        success: false,
-        message: 'Credenciales inválidas.'
-      });
-    }
-
     const user = await User.findByEmail(email);
     if (!user) {
       return res.status(401).json({
@@ -161,12 +134,6 @@ const login = async (req, res) => {
 const refresh = async (req, res) => {
   try {
     const { refreshToken } = req.body || {};
-    if (!refreshToken) {
-      return res.status(400).json({
-        success: false,
-        message: 'Se requiere un refresh token.'
-      });
-    }
 
     const record = await RefreshToken.findActiveByToken(refreshToken);
     if (!record) {
@@ -204,12 +171,6 @@ const refresh = async (req, res) => {
 const logout = async (req, res) => {
   try {
     const { refreshToken } = req.body || {};
-    if (!refreshToken) {
-      return res.status(400).json({
-        success: false,
-        message: 'Se requiere un refresh token.'
-      });
-    }
 
     await RefreshToken.revokeByToken(refreshToken);
 
@@ -225,13 +186,6 @@ const logout = async (req, res) => {
 const requestPasswordReset = async (req, res) => {
   try {
     const { email } = req.body || {};
-
-    if (!isEmail(email)) {
-      return res.status(200).json({
-        success: true,
-        message: 'Si el correo existe, se enviará un enlace de recuperación.'
-      });
-    }
 
     const user = await User.findByEmail(email);
     if (!user) {
@@ -271,13 +225,6 @@ const resetPassword = async (req, res) => {
   try {
     const { token, newPassword } = req.body || {};
 
-    if (!token || !isStrongPassword(newPassword)) {
-      return res.status(400).json({
-        success: false,
-        message: 'Token inválido o contraseña débil.'
-      });
-    }
-
     const record = await PasswordResetToken.findActiveByToken(token);
     if (!record) {
       return res.status(400).json({
@@ -312,3 +259,10 @@ module.exports = {
   requestPasswordReset,
   resetPassword
 };
+
+
+
+
+
+
+

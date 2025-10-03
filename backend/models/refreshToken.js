@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const db = require('../config/db');
+const db = require('../config/config');
 
 const TABLE = 'user_refresh_tokens';
 
