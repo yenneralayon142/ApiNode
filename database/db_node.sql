@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS user_refresh_tokens (
   CONSTRAINT fk_refresh_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- Tabla de tokens de recuperación de contraseña
+-- Tabla de tokens de recuperaciï¿½n de contraseï¿½a
 CREATE TABLE IF NOT EXISTS password_reset_tokens (
   id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   user_id BIGINT UNSIGNED NOT NULL,
@@ -48,12 +48,12 @@ CREATE TABLE IF NOT EXISTS password_reset_tokens (
   CONSTRAINT fk_password_reset_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- Tabla de categorías
+-- Tabla de categorï¿½as
 CREATE TABLE IF NOT EXISTS categories (
   id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   user_id BIGINT UNSIGNED NOT NULL,
   name VARCHAR(120) NOT NULL,
-  type ENUM(''income'', ''expense'') NOT NULL DEFAULT ''expense'',
+  type ENUM('income', 'expense') NOT NULL DEFAULT 'expense',
   description VARCHAR(255) NULL,
   color VARCHAR(7) NULL,
   icon VARCHAR(100) NULL,
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS transactions (
   user_id BIGINT UNSIGNED NOT NULL,
   category_id BIGINT UNSIGNED NULL,
   client_id VARCHAR(100) NULL,
-  type ENUM(''income'', ''expense'') NOT NULL,
+  type ENUM('income', 'expense') NOT NULL,
   amount DECIMAL(15,2) NOT NULL,
   description VARCHAR(255) NULL,
   occurred_at DATETIME NOT NULL,
@@ -85,15 +85,15 @@ CREATE TABLE IF NOT EXISTS transactions (
   CONSTRAINT fk_transactions_category FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
--- Cola de sincronización de transacciones
+-- Cola de sincronizaciï¿½n de transacciones
 CREATE TABLE IF NOT EXISTS transaction_sync_queue (
   id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   user_id BIGINT UNSIGNED NOT NULL,
   transaction_id BIGINT UNSIGNED NULL,
   client_id VARCHAR(100) NULL,
-  operation ENUM(''create'', ''update'', ''delete'') NOT NULL,
+  operation ENUM('create', 'update', 'delete') NOT NULL,
   payload TEXT NULL,
-  status ENUM(''pending'', ''applied'', ''skipped'', ''error'') NOT NULL DEFAULT ''pending'',
+  status ENUM('pending', 'applied', 'skipped', 'error') NOT NULL DEFAULT 'pending',
   message VARCHAR(255) NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   processed_at DATETIME NULL,
