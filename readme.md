@@ -27,6 +27,7 @@ Jonathan Andres Garcia Rodriguez
 ## 📕 Documento Proyecto
 Puedes consultar el documento completo en el siguiente enlace:  
 [📘 Descargar PDF del proyecto](documentacionProyecto/ProyectoControlDeGastosMovil.pdf)
+[📘 Descargar Mockups del proyecto](documentacionProyecto/YenAndGestion.pdf)
 ---
 
 ## 🚀 Instalación y ejecución
