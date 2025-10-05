@@ -27,7 +27,8 @@ Jonathan Andres Garcia Rodriguez
 ## 📕 Documento Proyecto
 Puedes consultar el documento completo en el siguiente enlace:  
 [📘 Descargar PDF del proyecto](documentacionProyecto/ProyectoControlDeGastosMovil.pdf) <br>
-[📘 Descargar Mockups del proyecto](documentacionProyecto/YenAndGestion.pdf)
+[📘 Descargar Mockups del proyecto](documentacionProyecto/YenAndGestion.pdf) <br>
+- **Enlace para ver Mockups** [Mockups](https://www.figma.com/proto/GUuX644yU323xV8B2oIi97/YenAndGestion?node-id=7020-3430&t=yTJJadWKho8JGoTF-1)
 ---
 
 ## 🚀 Instalación y ejecución
