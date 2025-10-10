@@ -1,37 +1,49 @@
-# 📱 Aplicación de Control de Gastos Personales
+﻿# Aplicacion de Control de Gastos Personales
 
-Este proyecto consiste en una aplicación móvil multiplataforma que permite a los usuarios registrar, consultar y gestionar sus gastos personales de manera eficiente. El objetivo principal es brindar una herramienta sencilla y práctica que apoye la toma de decisiones financieras.
-
----
-## 🙍‍♂️ Desarrolladores
-
-Yenner Snyder Alayon Benavides <br>
-Jonathan Andres Garcia Rodriguez
-
-## ✨ Características principales
-- ✅ Registro de ingresos y egresos.
-- ✅ Consulta detallada de transacciones.
-- ✅ Reportes de gastos por categoría y período.
-- ✅ Funcionalidad **offline** con sincronización al volver la red.
-- ✅ Interfaz intuitiva y fácil de usar.
+Esta aplicacion movil multiplataforma permite registrar, consultar y gestionar gastos personales de forma sencilla para apoyar mejores decisiones financieras.
 
 ---
+## Desarrolladores
+- Yenner Snyder Alayon Benavides
+- Jonathan Andres Garcia Rodriguez
 
-## 🛠️ Stack Tecnológico
-- **Frontend:** [React Native](https://reactnative.dev/)  
-- **Backend:** [Node.js](https://nodejs.org/) con API REST  
-- **Base de Datos:** [PostgreSQL](https://www.postgresql.org/) o [MongoDB](https://www.mongodb.com/)  o [MySql](https://www.mysql.com/)
-- **Gestión del Proyecto:** [Azure DevOps](https://azure.microsoft.com/services/devops/) (Boards, Repos, Pipelines)
+## Caracteristicas principales
+- Registro de ingresos y egresos.
+- Consulta detallada de transacciones.
+- Reportes de gastos por categoria y periodo.
+- Funcionamiento offline con sincronizacion cuando vuelve la red.
+- Interfaz enfocada en la facilidad de uso.
 
-
-## 📕 Documento Proyecto
-Puedes consultar el documento completo en el siguiente enlace:  
-[📘 Descargar PDF del proyecto](documentacionProyecto/ProyectoControlDeGastosMovil.pdf) <br>
-[📘 Descargar Mockups del proyecto](documentacionProyecto/YenAndGestion.pdf) <br>
-- **Enlace para ver Mockups** [Mockups](https://www.figma.com/proto/GUuX644yU323xV8B2oIi97/YenAndGestion?node-id=7020-3430&t=yTJJadWKho8JGoTF-1)
 ---
+## Stack tecnologico
+- **Frontend:** React Native (Expo)
+- **Backend:** Node.js con API REST
+- **Base de datos:** PostgreSQL, MongoDB o MySQL
+- **Gestion del proyecto:** Azure DevOps (Boards, Repos, Pipelines)
 
-## 🚀 Instalación y ejecución
+---
+## Documentacion del proyecto
+- [Descargar PDF del proyecto](documentacionProyecto/ProyectoControlDeGastosMovil.pdf)
+- [Descargar Mockups del proyecto](documentacionProyecto/YenAndGestion.pdf)
+- [Ver mockups en Figma](https://www.figma.com/proto/GUuX644yU323xV8B2oIi97/YenAndGestion?node-id=7020-3430&t=yTJJadWKho8JGoTF-1)
 
-Futuramente se desbloqueara esta sección..
+---
+## Instalacion y ejecucion
 
+### Backend
+1. `cd backend`
+2. `npm install`
+3. Configure las variables de entorno en `backend/.env` usando `backend/.env.example` como referencia.
+4. `npm start` para levantar la API (por defecto en el puerto 3000).
+
+### Frontend (Expo)
+1. `cd frontend`
+2. `npm install`
+3. Cree un archivo `.env` (opcional) para las URL del backend y ajustelas dentro de `app.json` o usando `expo-constants` segun sea necesario.
+4. `npx expo start` para abrir el bundler y elegir `a` (Android), `w` (web) o escanear el QR con Expo Go.
+
+---
+## Notas adicionales
+- Mantenga la base de datos sincronizada con los cambios de modelos actualizando `database/db_node.sql`.
+- Siga las convenciones de commits descritas en `AGENTS.md`.
+- Las futuras secciones de pruebas se habilitaran cuando Jest y Supertest esten configurados.
