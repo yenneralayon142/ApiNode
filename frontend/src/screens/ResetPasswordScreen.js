@@ -4,10 +4,39 @@ import { AuthLayout } from '../components/AuthLayout';
 import { TextField } from '../components/TextField';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { spacing, colors, typography } from '../theme';
+import { resetPassword } from '../services/authService';
 
 export const ResetPasswordScreen = ({ navigation }) => {
+  const [token, setToken] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleReset = async () => {
+    setError(null);
+    if (!token) {
+      setError('Ingresa el token de recuperación.');
+      return;
+    }
+    if (password !== confirmPassword) {
+      setError('Las contraseñas no coinciden.');
+      return;
+    }
+    setLoading(true);
+    try {
+      const result = await resetPassword({ token, newPassword: password });
+      if (result.success) {
+        navigation.navigate('PasswordChanged');
+      } else {
+        setError(result.message || 'No fue posible actualizar la contraseña.');
+      }
+    } catch (err) {
+      setError(err.message || 'Error al actualizar la contraseña.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <AuthLayout
@@ -15,6 +44,14 @@ export const ResetPasswordScreen = ({ navigation }) => {
       subtitle="Crea una contraseña segura"
     >
       <View>
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+        <TextField
+          style={styles.control}
+          placeholder="Token de recuperación"
+          value={token}
+          onChangeText={setToken}
+          autoCapitalize="none"
+        />
         <TextField
           style={styles.control}
           placeholder="Nueva contraseña"
@@ -30,8 +67,9 @@ export const ResetPasswordScreen = ({ navigation }) => {
           secureTextEntry
         />
         <PrimaryButton
-          title="Cambiar Contraseña"
-          onPress={() => navigation.navigate('PasswordChanged')}
+          title={loading ? 'Actualizando...' : 'Cambiar Contraseña'}
+          onPress={handleReset}
+          disabled={loading}
           style={styles.control}
         />
         <Text style={styles.helper}>
@@ -48,6 +86,12 @@ const styles = StyleSheet.create({
   },
   helper: {
     color: colors.muted,
+    fontSize: typography.small,
+    textAlign: 'center',
+  },
+  errorText: {
+    color: '#FF6B6B',
+    marginBottom: spacing.md,
     fontSize: typography.small,
     textAlign: 'center',
   },
