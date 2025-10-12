@@ -61,7 +61,7 @@ transactionRoutes(app);
 reportRoutes(app);
 
 app.get('/', (req, res) => {
-  res.send('API de Control de Gastos en ejecución.');
+  res.send('API de Control de Gastos en ejecuciï¿½n.');
 });
 
 app.get('/test', (req, res) => {

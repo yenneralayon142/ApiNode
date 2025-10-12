@@ -5,10 +5,21 @@ import { TextField } from '../components/TextField';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { TextLink } from '../components/TextLink';
 import { spacing, colors, typography } from '../theme';
+import { useAuth } from '../context/AuthContext';
 
 export const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const { signIn, actionLoading } = useAuth();
+
+  const handleLogin = async () => {
+    setError(null);
+    const result = await signIn({ email, password });
+    if (!result.success) {
+      setError(result.message || 'No fue posible iniciar sesión');
+    }
+  };
 
   return (
     <AuthLayout
@@ -25,6 +36,7 @@ export const LoginScreen = ({ navigation }) => {
       }
     >
       <View>
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
         <TextField
           style={styles.control}
           placeholder="example@example.com"
@@ -46,8 +58,9 @@ export const LoginScreen = ({ navigation }) => {
           style={styles.forgotLink}
         />
         <PrimaryButton
-          title="Ingreso"
-          onPress={() => navigation.navigate('DashboardPlaceholder')}
+          title={actionLoading ? 'Ingresando...' : 'Ingreso'}
+          onPress={handleLogin}
+          disabled={actionLoading}
           style={styles.control}
         />
         <PrimaryButton
@@ -78,5 +91,11 @@ const styles = StyleSheet.create({
     color: colors.muted,
     fontSize: typography.small,
     marginRight: spacing.xs,
+  },
+  errorText: {
+    color: '#FF6B6B',
+    marginBottom: spacing.md,
+    fontSize: typography.small,
+    textAlign: 'center',
   },
 });
