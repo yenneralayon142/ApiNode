@@ -8,7 +8,7 @@ import { RegisterScreen } from '../screens/RegisterScreen';
 import { ForgotPasswordScreen } from '../screens/ForgotPasswordScreen';
 import { ResetPasswordScreen } from '../screens/ResetPasswordScreen';
 import { PasswordChangedScreen } from '../screens/PasswordChangedScreen';
-import { DashboardScreen } from '../screens/DashboardScreen';
+import { DashboardPlaceholderScreen } from '../screens/DashboardPlaceholderScreen';
 import { colors } from '../theme';
 import { useAuth } from '../context/AuthContext';
 
@@ -35,7 +35,7 @@ const AuthStack = () => (
 
 const PrivateStack = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="Dashboard" component={DashboardScreen} />
+    <Stack.Screen name="Dashboard" component={DashboardPlaceholderScreen} />
   </Stack.Navigator>
 );
 

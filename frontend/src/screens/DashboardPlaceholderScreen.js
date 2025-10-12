@@ -1,5 +1,4 @@
-﻿import React from "react";
-import { SafeAreaView, View, Text, StyleSheet, ScrollView } from "react-native";
+﻿import { SafeAreaView, View, Text, StyleSheet, ScrollView } from "react-native";
 import { Ionicons, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 
 export const DashboardPlaceholder = () => {
