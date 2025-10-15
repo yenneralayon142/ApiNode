@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { colors, radii, spacing, typography } from '../theme';
 
@@ -51,7 +51,7 @@ export const PrimaryButton = ({
 const styles = StyleSheet.create({
   button: {
     paddingVertical: spacing.md,
-    borderRadius: radii.md,
+    borderRadius: 999,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000000',

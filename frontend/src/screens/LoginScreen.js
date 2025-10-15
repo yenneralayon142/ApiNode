@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { AuthLayout } from '../components/AuthLayout';
 import { TextField } from '../components/TextField';
@@ -17,7 +17,7 @@ export const LoginScreen = ({ navigation }) => {
     setError(null);
     const result = await signIn({ email, password });
     if (!result.success) {
-      setError(result.message || 'No fue posible iniciar sesión');
+      setError(result.message || 'No fue posible iniciar sesion');
     }
   };
 
@@ -27,18 +27,18 @@ export const LoginScreen = ({ navigation }) => {
       subtitle="Ingresa para revisar tus finanzas"
       footer={
         <View style={styles.footerRow}>
-          <Text style={styles.footerText}>¿No tienes una cuenta?</Text>
+          <Text style={styles.footerText}>No tienes una cuenta?</Text>
           <TextLink
-            label="Regístrate"
+            label="Registrate"
             onPress={() => navigation.navigate('Register')}
+            textStyle={styles.footerLink}
           />
         </View>
       }
     >
-      <View>
+      <View style={styles.form}>
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
         <TextField
-          style={styles.control}
           placeholder="example@example.com"
           value={email}
           onChangeText={setEmail}
@@ -46,41 +46,50 @@ export const LoginScreen = ({ navigation }) => {
           autoCapitalize="none"
         />
         <TextField
-          style={styles.control}
-          placeholder="••••••••"
+          placeholder="********"
           value={password}
           onChangeText={setPassword}
           secureTextEntry
+          enableVisibilityToggle
         />
         <TextLink
           label="¿Olvidaste tu contraseña?"
           onPress={() => navigation.navigate('ForgotPassword')}
-          style={styles.forgotLink}
+          textStyle={styles.link}
         />
-        <PrimaryButton
-          title={actionLoading ? 'Ingresando...' : 'Ingreso'}
-          onPress={handleLogin}
-          disabled={actionLoading}
-          style={styles.control}
-        />
-        <PrimaryButton
-          title="Registro"
-          variant="secondary"
-          onPress={() => navigation.navigate('Register')}
-          style={styles.control}
-        />
+        <View style={styles.actions}>
+          <PrimaryButton
+            title={actionLoading ? 'Ingresando...' : 'Ingreso'}
+            onPress={handleLogin}
+            disabled={actionLoading}
+          />
+          <PrimaryButton
+            title="Registro"
+            variant="secondary"
+            onPress={() => navigation.navigate('Register')}
+          />
+        </View>
       </View>
     </AuthLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  control: {
-    marginBottom: spacing.md,
+  form: {
+    width: '100%',
+    gap: spacing.md,
   },
-  forgotLink: {
-    alignSelf: 'flex-end',
-    marginBottom: spacing.md,
+  actions: {
+    width: '100%',
+    gap: spacing.md,
+    marginTop: spacing.md,
+  },
+  link: {
+    alignSelf: 'center',
+    color: colors.primary,
+    fontSize: typography.small,
+    fontWeight: '600',
+    marginTop: spacing.xs,
   },
   footerRow: {
     flexDirection: 'row',
@@ -92,10 +101,15 @@ const styles = StyleSheet.create({
     fontSize: typography.small,
     marginRight: spacing.xs,
   },
+  footerLink: {
+    color: colors.primary,
+    fontSize: typography.small,
+    fontWeight: '600',
+  },
   errorText: {
     color: '#FF6B6B',
-    marginBottom: spacing.md,
-    fontSize: typography.small,
     textAlign: 'center',
+    fontSize: typography.small,
   },
 });
+

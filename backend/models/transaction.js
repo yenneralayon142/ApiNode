@@ -1,4 +1,4 @@
-const db = require('../config/config');
+﻿const db = require('../config/config');
 
 const query = (sql, params = []) =>
   new Promise((resolve, reject) => {
@@ -179,16 +179,19 @@ const getCategorySummaryForUser = async (userId, options = {}) => {
   `;
 
   const dataSql = `
-    SELECT
-      t.category_id,
-      MAX(c.name) AS category_name,
-      MAX(c.type) AS category_type,
-      SUM(CASE WHEN t.type = 'income' THEN t.amount ELSE 0 END) AS income,
-      SUM(CASE WHEN t.type = 'expense' THEN t.amount ELSE 0 END) AS expense,
-      COUNT(*) AS total
-    ${baseSql}
-    GROUP BY t.category_id
-    ORDER BY category_name IS NULL, category_name ASC, t.category_id ASC
+    SELECT *
+      FROM (
+        SELECT
+          t.category_id,
+          MAX(c.name) AS category_name,
+          MAX(c.type) AS category_type,
+          SUM(CASE WHEN t.type = 'income' THEN t.amount ELSE 0 END) AS income,
+          SUM(CASE WHEN t.type = 'expense' THEN t.amount ELSE 0 END) AS expense,
+          COUNT(*) AS total
+        ${baseSql}
+        GROUP BY t.category_id
+      ) AS summary
+    ORDER BY summary.category_name IS NULL, summary.category_name ASC, summary.category_id ASC
     LIMIT ? OFFSET ?
   `;
 
@@ -211,7 +214,7 @@ const getCategorySummaryForUser = async (userId, options = {}) => {
     const expense = Number(row.expense || 0);
     return {
       category_id: row.category_id,
-      category_name: row.category_name || 'Sin categor�a',
+      category_name: row.category_name || 'Sin categoría',
       category_type: row.category_type || null,
       income,
       expense,
@@ -231,7 +234,6 @@ const getCategorySummaryForUser = async (userId, options = {}) => {
     }
   };
 };
-
 const create = async ({
   userId,
   categoryId = null,
@@ -339,3 +341,14 @@ module.exports = {
   softDeleteForUser,
   restoreForUser
 };
+
+
+
+
+
+
+
+
+
+
+

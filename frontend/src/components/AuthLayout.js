@@ -1,6 +1,6 @@
-﻿import React from 'react';
+import React from 'react';
 import { SafeAreaView, View, Text, StyleSheet, ScrollView } from 'react-native';
-import { colors, spacing, radii, typography } from '../theme';
+import { colors, spacing, typography } from '../theme';
 
 export const AuthLayout = ({
   title,
@@ -33,18 +33,20 @@ export const AuthLayout = ({
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.surface,
   },
   container: {
     flex: 1,
+    backgroundColor: colors.surface,
   },
   hero: {
     backgroundColor: colors.primary,
-    paddingHorizontal: spacing.xl,
-    paddingTop: spacing.lg,
-    paddingBottom: spacing.lg,
-    borderBottomLeftRadius: radii.lg,
-    borderBottomRightRadius: radii.lg,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingTop: spacing.xl * 2,
+    paddingBottom: spacing.xl + spacing.sm,
+    borderBottomLeftRadius: 36,
+    borderBottomRightRadius: 36,
   },
   heroTitle: {
     fontSize: typography.heading,
@@ -56,24 +58,27 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     marginTop: spacing.xs,
     opacity: 0.85,
+    textAlign: 'center',
   },
   cardWrapper: {
     flex: 1,
     paddingHorizontal: spacing.xl,
-    paddingTop: spacing.lg,
+    marginTop: -spacing.lg,
   },
   card: {
     backgroundColor: colors.surface,
-    borderRadius: radii.lg,
+    borderRadius: 32,
     padding: spacing.xl,
+    width: '100%',
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 12 },
-    shadowOpacity: 0.15,
+    shadowOpacity: 0.12,
     shadowRadius: 24,
-    elevation: 8,
+    elevation: 6,
   },
   footer: {
     marginTop: spacing.lg,
     alignItems: 'center',
   },
 });
+
