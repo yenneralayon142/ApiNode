@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
@@ -9,6 +9,7 @@ import { ForgotPasswordScreen } from '../screens/ForgotPasswordScreen';
 import { ResetPasswordScreen } from '../screens/ResetPasswordScreen';
 import { PasswordChangedScreen } from '../screens/PasswordChangedScreen';
 import { DashboardScreen } from '../screens/DashboardScreen';
+import { NewExpenseScreen } from '../screens/NewExpenseScreen';
 import { colors } from '../theme';
 import { useAuth } from '../context/AuthContext';
 
@@ -36,6 +37,7 @@ const AuthStack = () => (
 const PrivateStack = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
     <Stack.Screen name="Dashboard" component={DashboardScreen} />
+    <Stack.Screen name="NewExpense" component={NewExpenseScreen} />
   </Stack.Navigator>
 );
 
