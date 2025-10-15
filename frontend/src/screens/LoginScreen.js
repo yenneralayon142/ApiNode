@@ -53,7 +53,7 @@ export const LoginScreen = ({ navigation }) => {
           enableVisibilityToggle
         />
         <TextLink
-          label="Olvidaste tu contrasena?"
+          label="¿Olvidaste tu contraseña?"
           onPress={() => navigation.navigate('ForgotPassword')}
           textStyle={styles.link}
         />
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.md,
   },
   link: {
-    alignSelf: 'flex-end',
+    alignSelf: 'center',
     color: colors.primary,
     fontSize: typography.small,
     fontWeight: '600',
