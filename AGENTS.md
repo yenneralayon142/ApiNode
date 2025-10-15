@@ -1,5 +1,10 @@
 # Repository Guidelines
 
+## Frontend/UI Highlights
+- Pantallas de autenticacion usan AuthLayout con hero azul curvo, inputs y botones tipo pill.
+- Los campos de contrasena (TextField con enableVisibilityToggle) incluyen ojo para mostrar/ocultar texto.
+- El dashboard consume resumenes y categorias en tiempo real de /api/reports/* y /api/transactions.
+- Pantalla NewExpenseScreen permite registrar gastos y sincronizarlos con el backend.
 ## Project Structure & Module Organization
 - `backend/` contains the Node.js API: `server.js` entrypoint, `routes/`, `controllers/`, `models/`, and `config/` for database/passport wiring.
 - `database/db_node.sql` stores schema and seed data; update alongside model changes.
@@ -8,7 +13,7 @@
 ## Build, Test, and Development Commands
 - `cd backend && npm install` installs dependencies. Run after pulling package updates.
 - `cd backend && node server.js` boots the API on `process.env.PORT` (default 3000); adjust `.env` o `config/config.js` for host overrides.
-- `cd backend && npm test` actualmente es un placeholder. Sustitúyelo por Jest + supertest antes de fusionar cambios relevantes.
+- `cd backend && npm test` actualmente es un placeholder. Sustit?yelo por Jest + supertest antes de fusionar cambios relevantes.
 
 ## Coding Style & Naming Conventions
 - Prefer 2-space indentation, single quotes, and trailing commas only where ESLint requires them.
@@ -28,3 +33,7 @@
 ## Security & Configuration Tips
 - Sanitize user input in controllers before touching `mysql` queries; prefer parameterized statements.
 - Never commit real credentials; usa `backend/.env.example` para documentar claves (`PORT`, `DB_*`, `JWT_*`, `PASSWORD_RESET_TOKEN_MINUTES`).
+
+
+
+
