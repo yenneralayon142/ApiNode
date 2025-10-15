@@ -88,6 +88,7 @@ export const RegisterScreen = ({ navigation }) => {
           value={form.password}
           onChangeText={(value) => updateField('password', value)}
           secureTextEntry
+          enableVisibilityToggle
         />
         <Text style={styles.disclaimer}>
           Al registrarte aceptas los términos, políticas de privacidad y confirmas que tu información es correcta.
@@ -130,3 +131,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+

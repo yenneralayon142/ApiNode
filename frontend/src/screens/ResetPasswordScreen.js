@@ -58,6 +58,7 @@ export const ResetPasswordScreen = ({ navigation }) => {
           value={password}
           onChangeText={setPassword}
           secureTextEntry
+          enableVisibilityToggle
         />
         <TextField
           style={styles.control}
@@ -65,6 +66,7 @@ export const ResetPasswordScreen = ({ navigation }) => {
           value={confirmPassword}
           onChangeText={setConfirmPassword}
           secureTextEntry
+          enableVisibilityToggle
         />
         <PrimaryButton
           title={loading ? 'Actualizando...' : 'Cambiar Contraseña'}
@@ -96,3 +98,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+

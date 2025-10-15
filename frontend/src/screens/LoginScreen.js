@@ -51,6 +51,7 @@ export const LoginScreen = ({ navigation }) => {
           value={password}
           onChangeText={setPassword}
           secureTextEntry
+          enableVisibilityToggle
         />
         <TextLink
           label="¿Olvidaste tu contraseña?"
@@ -99,3 +100,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
