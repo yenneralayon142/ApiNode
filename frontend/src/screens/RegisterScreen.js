@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { AuthLayout } from '../components/AuthLayout';
 import { TextField } from '../components/TextField';
@@ -14,7 +14,6 @@ export const RegisterScreen = ({ navigation }) => {
     email: '',
     phone: '',
     password: '',
-    confirmPassword: '',
   });
   const [error, setError] = useState(null);
   const { signUp, actionLoading } = useAuth();
@@ -26,7 +25,7 @@ export const RegisterScreen = ({ navigation }) => {
   const handleRegister = async () => {
     setError(null);
     if (!form.email || !form.password) {
-      setError('Completa correo y contraseña.');
+      setError('Completa correo y contrasena.');
       return;
     }
     const payload = {
@@ -44,31 +43,32 @@ export const RegisterScreen = ({ navigation }) => {
 
   return (
     <AuthLayout
-      title="Crear Una Cuenta"
+      title="Crear una cuenta"
       subtitle="Configura tu acceso a YenAndGestion"
       footer={
         <View style={styles.footerRow}>
-          <Text style={styles.footerText}>¿Ya tienes cuenta?</Text>
-          <TextLink label="Ingresa" onPress={() => navigation.navigate('Login')} />
+          <Text style={styles.footerText}>Ya tienes cuenta?</Text>
+          <TextLink
+            label="Ingresa"
+            onPress={() => navigation.navigate('Login')}
+            textStyle={styles.footerLink}
+          />
         </View>
       }
     >
-      <View>
+      <View style={styles.form}>
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
         <TextField
-          style={styles.control}
           placeholder="Nombre"
           value={form.name}
           onChangeText={(value) => updateField('name', value)}
         />
         <TextField
-          style={styles.control}
           placeholder="Apellido"
           value={form.lastname}
           onChangeText={(value) => updateField('lastname', value)}
         />
         <TextField
-          style={styles.control}
           placeholder="correo@example.com"
           value={form.email}
           onChangeText={(value) => updateField('email', value)}
@@ -76,28 +76,22 @@ export const RegisterScreen = ({ navigation }) => {
           autoCapitalize="none"
         />
         <TextField
-          style={styles.control}
           placeholder="3112006677"
           value={form.phone}
           onChangeText={(value) => updateField('phone', value)}
           keyboardType="phone-pad"
         />
         <TextField
-          style={styles.control}
-          placeholder="12345"
+          placeholder="Contrasena"
           value={form.password}
           onChangeText={(value) => updateField('password', value)}
           secureTextEntry
           enableVisibilityToggle
         />
-        <Text style={styles.disclaimer}>
-          Al registrarte aceptas los términos, políticas de privacidad y confirmas que tu información es correcta.
-        </Text>
         <PrimaryButton
           title={actionLoading ? 'Creando cuenta...' : 'Registro'}
           onPress={handleRegister}
           disabled={actionLoading}
-          style={styles.control}
         />
       </View>
     </AuthLayout>
@@ -105,8 +99,9 @@ export const RegisterScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  control: {
-    marginBottom: spacing.md,
+  form: {
+    width: '100%',
+    gap: spacing.md,
   },
   footerRow: {
     flexDirection: 'row',
@@ -118,15 +113,13 @@ const styles = StyleSheet.create({
     fontSize: typography.small,
     marginRight: spacing.xs,
   },
-  disclaimer: {
-    color: colors.muted,
+  footerLink: {
+    color: colors.primary,
     fontSize: typography.small,
-    marginBottom: spacing.lg,
-    textAlign: 'center',
+    fontWeight: '600',
   },
   errorText: {
     color: '#FF6B6B',
-    marginBottom: spacing.md,
     fontSize: typography.small,
     textAlign: 'center',
   },

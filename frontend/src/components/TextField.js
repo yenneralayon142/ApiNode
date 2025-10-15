@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, radii, typography } from '../theme';
@@ -24,7 +24,7 @@ export const TextField = ({
       {label ? <Text style={styles.label}>{label}</Text> : null}
       <View style={styles.inputWrapper}>
         <TextInput
-          placeholderTextColor={colors.muted}
+          placeholderTextColor='rgba(14, 62, 62, 0.6)'
           style={[
             styles.input,
             toggleEnabled ? styles.inputWithToggle : null,
@@ -59,16 +59,16 @@ const styles = StyleSheet.create({
   },
   inputWrapper: {
     position: 'relative',
+    width: '100%',
   },
   input: {
-    backgroundColor: colors.infoLight,
-    paddingVertical: spacing.sm,
+    backgroundColor: colors.primaryLight,
+    paddingVertical: spacing.md,
     paddingHorizontal: spacing.lg,
-    borderRadius: radii.lg,
-    color: colors.heading,
+    borderRadius: 999,
+    color: colors.surface,
     fontSize: typography.body,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.35)',
+    minHeight: spacing.xl,
   },
   inputWithToggle: {
     paddingRight: spacing.xl,
@@ -82,4 +82,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+
 

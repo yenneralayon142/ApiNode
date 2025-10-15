@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { AuthLayout } from '../components/AuthLayout';
 import { TextField } from '../components/TextField';
@@ -16,11 +16,11 @@ export const ResetPasswordScreen = ({ navigation }) => {
   const handleReset = async () => {
     setError(null);
     if (!token) {
-      setError('Ingresa el token de recuperación.');
+      setError('Ingresa el token de recuperacion.');
       return;
     }
     if (password !== confirmPassword) {
-      setError('Las contraseñas no coinciden.');
+      setError('Las contrasenas no coinciden.');
       return;
     }
     setLoading(true);
@@ -29,10 +29,10 @@ export const ResetPasswordScreen = ({ navigation }) => {
       if (result.success) {
         navigation.navigate('PasswordChanged');
       } else {
-        setError(result.message || 'No fue posible actualizar la contraseña.');
+        setError(result.message || 'No fue posible actualizar la contrasena.');
       }
     } catch (err) {
-      setError(err.message || 'Error al actualizar la contraseña.');
+      setError(err.message || 'Error al actualizar la contrasena.');
     } finally {
       setLoading(false);
     }
@@ -40,42 +40,38 @@ export const ResetPasswordScreen = ({ navigation }) => {
 
   return (
     <AuthLayout
-      title="Nueva Contraseña"
-      subtitle="Crea una contraseña segura"
+      title="Nueva contrasena"
+      subtitle="Crea una contrasena segura"
     >
-      <View>
+      <View style={styles.form}>
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
         <TextField
-          style={styles.control}
-          placeholder="Token de recuperación"
+          placeholder="Token de recuperacion"
           value={token}
           onChangeText={setToken}
           autoCapitalize="none"
         />
         <TextField
-          style={styles.control}
-          placeholder="Nueva contraseña"
+          placeholder="Nueva contrasena"
           value={password}
           onChangeText={setPassword}
           secureTextEntry
           enableVisibilityToggle
         />
         <TextField
-          style={styles.control}
-          placeholder="Confirmar contraseña"
+          placeholder="Confirmar contrasena"
           value={confirmPassword}
           onChangeText={setConfirmPassword}
           secureTextEntry
           enableVisibilityToggle
         />
         <PrimaryButton
-          title={loading ? 'Actualizando...' : 'Cambiar Contraseña'}
+          title={loading ? 'Actualizando...' : 'Cambiar contrase?a'}
           onPress={handleReset}
           disabled={loading}
-          style={styles.control}
         />
         <Text style={styles.helper}>
-          Recuerda no compartir tu nueva contraseña y actualizarla periódicamente.
+          Recuerda no compartir tu nueva contrasena y actualizarla periodicamente.
         </Text>
       </View>
     </AuthLayout>
@@ -83,8 +79,9 @@ export const ResetPasswordScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  control: {
-    marginBottom: spacing.md,
+  form: {
+    width: '100%',
+    gap: spacing.md,
   },
   helper: {
     color: colors.muted,
@@ -93,7 +90,6 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: '#FF6B6B',
-    marginBottom: spacing.md,
     fontSize: typography.small,
     textAlign: 'center',
   },

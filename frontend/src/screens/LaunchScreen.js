@@ -1,7 +1,7 @@
-﻿import React from 'react';
+import React from 'react';
 import { SafeAreaView, View, Text, StyleSheet } from 'react-native';
 import { PrimaryButton } from '../components/PrimaryButton';
-import { colors, spacing, radii, typography } from '../theme';
+import { colors, spacing, typography } from '../theme';
 
 export const LaunchScreen = ({ navigation }) => {
   return (
@@ -39,7 +39,7 @@ export const LaunchScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.surface,
   },
   container: {
     flex: 1,
@@ -47,13 +47,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: spacing.xl,
     backgroundColor: colors.surface,
-    margin: spacing.xl,
-    borderRadius: radii.lg,
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 20 },
-    shadowOpacity: 0.15,
-    shadowRadius: 30,
-    elevation: 12,
+    width: '100%',
   },
   logoWrapper: {
     marginBottom: spacing.lg,
@@ -116,3 +110,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
 });
+
+
+
+
