@@ -1,4 +1,4 @@
-锘縤mport React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
 import * as authService from '../services/authService';
 import { saveSession, getSession, clearSession } from '../storage/authStorage';
 
@@ -15,7 +15,7 @@ const parseAuthResult = (result) => {
   }
   return {
     success: Boolean(result?.success),
-    message: result?.message || 'Acci贸n no completada',
+    message: result?.message || 'Acci髇 no completada',
     data: result?.data,
   };
 };
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
             return;
           }
         } catch (error) {
-          console.warn('No se pudo refrescar la sesi贸n almacenada', error);
+          console.warn('No se pudo refrescar la sesi髇 almacenada', error);
         }
       }
 
@@ -70,6 +70,16 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
+  const updateStoredUser = useCallback(async (nextUser) => {
+    if (!nextUser) {
+      return;
+    }
+    setUser(nextUser);
+    await saveSession({
+      user: nextUser,
+    });
+  }, []);
+
   const signIn = async (credentials) => {
     setActionLoading(true);
     try {
@@ -82,7 +92,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       return {
         success: false,
-        message: error.message || 'Error al iniciar sesi贸n',
+        message: error.message || 'Error al iniciar sesi髇',
       };
     } finally {
       setActionLoading(false);
@@ -114,7 +124,7 @@ export const AuthProvider = ({ children }) => {
         await authService.logout({ refreshToken }, accessToken);
       }
     } catch (error) {
-      console.warn('Error al cerrar sesi贸n en el backend', error);
+      console.warn('Error al cerrar sesi髇 en el backend', error);
     } finally {
       await clearSession();
       setUser(null);
@@ -134,8 +144,9 @@ export const AuthProvider = ({ children }) => {
       signUp,
       signOut,
       restoreSession,
+      updateStoredUser,
     }),
-    [user, accessToken, refreshToken, initializing, actionLoading],
+    [user, accessToken, refreshToken, initializing, actionLoading, updateStoredUser],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -148,3 +159,7 @@ export const useAuth = () => {
   }
   return context;
 };
+
+
+
+

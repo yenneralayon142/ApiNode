@@ -9,6 +9,7 @@ const { AppError } = require('./utils/errors');
 const errorHandler = require('./middlewares/errorHandler');
 
 const usersRoutes = require('./routes/userRoute');
+const profileRoutes = require('./routes/profileRoute');
 const authRoutes = require('./routes/authRoute');
 const categoryRoutes = require('./routes/categoryRoute');
 const transactionRoutes = require('./routes/transactionRoute');
@@ -56,6 +57,7 @@ require('./config/passport')(passport);
 
 authRoutes(app);
 usersRoutes(app);
+profileRoutes(app);
 categoryRoutes(app);
 transactionRoutes(app);
 reportRoutes(app);
@@ -75,3 +77,4 @@ app.use((req, res, next) => {
 app.use(errorHandler);
 
 module.exports = app;
+

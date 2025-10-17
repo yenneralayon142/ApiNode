@@ -56,7 +56,7 @@ const getGreeting = () => {
 };
 
 export const DashboardScreen = ({ navigation }) => {
-  const { user, accessToken, signOut } = useAuth();
+  const { user, accessToken } = useAuth();
   const [selectedFilter, setSelectedFilter] = useState('month');
   const [summary, setSummary] = useState(null);
   const [monthlySummary, setMonthlySummary] = useState([]);
@@ -220,8 +220,8 @@ export const DashboardScreen = ({ navigation }) => {
               <Text style={styles.greeting}>{`${greeting},`}</Text>
               <Text style={styles.userName}>{user?.name || user?.email || 'Usuario'}</Text>
             </View>
-            <TouchableOpacity onPress={signOut} style={styles.signOutButton}>
-              <Ionicons name='log-out-outline' size={22} color='#fff' />
+            <TouchableOpacity onPress={() => navigation.navigate('Profile')} style={styles.profileButton}>
+              <Ionicons name='person-circle-outline' size={22} color='#fff' />
             </TouchableOpacity>
           </View>
 
@@ -372,10 +372,10 @@ export const DashboardScreen = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.bottomAction}
-            onPress={signOut}
+            onPress={() => navigation.navigate('Profile')}
           >
-            <Ionicons name='person' size={26} color='#fff' />
-            <Text style={styles.bottomLabel}>Salir</Text>
+            <Ionicons name='person-circle' size={26} color='#fff' />
+            <Text style={styles.bottomLabel}>Perfil</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -413,7 +413,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginTop: 4
   },
-  signOutButton: {
+  profileButton: {
     padding: 8,
     borderRadius: 16,
     backgroundColor: 'rgba(255,255,255,0.15)'
@@ -608,6 +608,8 @@ const styles = StyleSheet.create({
     fontWeight: '600'
   }
 });
+
+
 
 
 

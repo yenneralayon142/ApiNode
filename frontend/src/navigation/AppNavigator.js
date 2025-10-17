@@ -9,6 +9,7 @@ import { ForgotPasswordScreen } from '../screens/ForgotPasswordScreen';
 import { ResetPasswordScreen } from '../screens/ResetPasswordScreen';
 import { PasswordChangedScreen } from '../screens/PasswordChangedScreen';
 import { DashboardScreen } from '../screens/DashboardScreen';
+import { ProfileScreen } from '../screens/ProfileScreen';
 import { NewExpenseScreen } from '../screens/NewExpenseScreen';
 import { colors } from '../theme';
 import { useAuth } from '../context/AuthContext';
@@ -38,6 +39,7 @@ const PrivateStack = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
     <Stack.Screen name="Dashboard" component={DashboardScreen} />
     <Stack.Screen name="NewExpense" component={NewExpenseScreen} />
+    <Stack.Screen name="Profile" component={ProfileScreen} />
   </Stack.Navigator>
 );
 
@@ -65,3 +67,5 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
 });
+
+
